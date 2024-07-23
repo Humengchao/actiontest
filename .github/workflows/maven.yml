@@ -35,16 +35,16 @@ jobs:
         docker save -o recmreminder.tar recmreminder:0.1
 
     - name: delete old docker image
-      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP_HK}} "docker stop recmreminder || true && docker rm recmreminder || true docker rmi recmreminder:0.1 || true"
+      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP}} "docker stop recmreminder || true && docker rm recmreminder || true docker rmi recmreminder:0.1 || true"
 
     - name: delete old docker tar
-      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP_HK}} "cd ${{secrets.REMOTE_PROJECT_CATALOGUE}} && rm -f recmreminder.tar"
+      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP}} "cd ${{secrets.REMOTE_PROJECT_CATALOGUE}} && rm -f recmreminder.tar"
 
     - name: upload new docker image and start up script
-      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} scp -o StrictHostKeyChecking=no ./recmreminder.tar root@${{secrets.REMOTE_SERVER_HW_IP_HK}}:${{secrets.REMOTE_PROJECT_CATALOGUE}}
+      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} scp -o StrictHostKeyChecking=no ./recmreminder.tar root@${{secrets.REMOTE_SERVER_HW_IP}}:${{secrets.REMOTE_PROJECT_CATALOGUE}}
 
     - name: load new docker image
-      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP_HK}} "docker load -i ${{secrets.REMOTE_PROJECT_CATALOGUE}}/recmreminder.tar"
+      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP}} "docker load -i ${{secrets.REMOTE_PROJECT_CATALOGUE}}/recmreminder.tar"
 
     - name: run project
-      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP_HK}} "docker run -d -p 9292:9292 --name recmreminder recmreminder:0.1"
+      run: sshpass -p ${{secrets.REMOTE_SERVER_HW_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_SERVER_HW_IP}} "docker run -d -p 9292:9292 --name recmreminder recmreminder:0.1"
