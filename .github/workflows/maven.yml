@@ -30,7 +30,7 @@ jobs:
         cache: maven
         
     - name: Build docker image
-      run: ｜
+      run: |
         docker build -t recmreminder:0.1 .
         docker save -o recmreminder.tar recmreminder:0.1
 
